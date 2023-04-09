@@ -8,7 +8,7 @@ import Image from 'react-bootstrap/Image';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import axios from 'axios';
-const CoursCard = ({ data }) => {
+const CoursCard = ({ data,handleToggle }) => {
   const user =JSON.parse(localStorage.getItem('user'))
   const {token} =JSON.parse(localStorage.getItem('user'))
   
@@ -72,6 +72,16 @@ const CoursCard = ({ data }) => {
         }
       }).then((res)=>{console.log(res.data.favorit);setIsFavorited(res.data.favorit)}).catch((err)=>console.log(err))
  
+    const deleteCourse = ()=>{
+         axios.delete(`http://127.0.0.1:4000/api/events/${data.event_id}`,{headers: {
+          Authorization: `Bearer ${token}`
+        }})
+         .then(res=>{
+          console.log(data.event_id)
+          handleToggle()
+          console.log(res)})
+         .catch(err=>console.log(err))
+    }
 
   return (
 
@@ -109,6 +119,7 @@ const CoursCard = ({ data }) => {
           {data.event_description.substring(0, 91)}
         </Card.Text>
         {user.user_type==="teacher" && isFavorited ? <Button variant="primary" onClick={handleCourseUp}>Update Course</Button>:false}
+        {user.user_type==="teacher" && isFavorited ? <Button variant="primary" onClick={deleteCourse}>Delete Course</Button>:false}
         <Button variant="primary" onClick={() => { handleCourseView(data.event_id) }}>View Course</Button>
 
 

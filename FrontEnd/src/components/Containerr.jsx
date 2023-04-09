@@ -8,6 +8,12 @@ import axios from 'axios'
 const Containerr = () => {
   const {token} =JSON.parse(localStorage.getItem('user'))
   const [data,setData] = useState([])
+  const [toggle , setToggle] = useState(true)
+  
+  const handleToggle= ()=>{
+    setToggle(!toggle)
+  }  
+
   const getAll = () => {
     axios.get("http://localhost:4000/api/events/getAll",{
       headers: {
@@ -23,7 +29,7 @@ const Containerr = () => {
   }
   useEffect (()=>{
     getAll()
-    },[])
+    },[toggle])
    
   return (
     <div>
@@ -38,7 +44,7 @@ const Containerr = () => {
             {data.length>0 && data.map((e,i)=>{
               return (
               <Col  className="mt-3" key = {i}>
-            <CoursCard data = {e}/>
+            <CoursCard data = {e} handleToggle={handleToggle}/>
             </Col>
               )
             })}

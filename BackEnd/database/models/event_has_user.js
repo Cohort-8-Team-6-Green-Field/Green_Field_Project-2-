@@ -31,5 +31,12 @@ module.exports={
         inner join event v on v.event_id = e.event_id 
         where e.user_id =?;`
         connection.query(sql,[user_id],callback)
+    },
+    getEventByTeacherName: (callback,user_name)=>{
+        let sql= `SELECT u.user_name,e.* FROM event_has_user eu
+        inner join user u on u.user_id = eu.user_id
+        inner join event e on e.event_id = eu.event_id
+        WHERE action_type = 'teacher' and u.user_name LIKE ?;`
+        connection.query(sql,[`%${user_name}%`],callback)
     }
 }

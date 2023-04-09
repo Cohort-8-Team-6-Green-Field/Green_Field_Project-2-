@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Accordion from 'react-bootstrap/Accordion';
 import { InputGroup, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 const SearchBar = ({ data }) => {
   const [teachers, setTeachers] = useState("")
   const [courses, setCourses] = useState("")
   const [courseDates, setCourseDates] = useState("")
+  const [search , setSearch] = useState("")
+  const {token} =JSON.parse(localStorage.getItem('user'))
+  console.log(teachers)
 
   const handelTeacher = (event) => {
     setTeachers(event.target.value)
@@ -20,10 +24,15 @@ const SearchBar = ({ data }) => {
   }
 
   const filterByTeacher = () => {
-    const filteredData = data.filter((course) => course.event_participants.includes(teachername)
-    );
-    console.log(filteredData);
-
+   axios.get(`http://127.0.0.1:4000/api/events_users/user/search/${teachers}`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }})
+   .then(res=>{
+    setCourses(res.data)
+    console.log(res.data)
+   }).catch(err=>{
+    console.log(err)})
   };
 
   const filterByCourseName = () => {
@@ -75,6 +84,7 @@ const SearchBar = ({ data }) => {
 
   };
 
+  
 
   return (
     <Accordion defaultActiveKey="0" flush>

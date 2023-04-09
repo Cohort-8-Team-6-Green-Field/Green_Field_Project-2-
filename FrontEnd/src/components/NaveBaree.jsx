@@ -27,7 +27,7 @@ const NaveBaree = () => {
           <NavDropdown title="My learning" id="collasible-nav-dropdown">
      
               <NavDropdown.Item href="/mylist">My List</NavDropdown.Item>
-              <NavDropdown.Item  onClick={handleDisconnect}>Disconect</NavDropdown.Item>
+              <NavDropdown.Item  onClick={handleDisconnect}>Disconnect</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
